@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData Okay
     private void loadWeatherData (){
-        new WeatherDataAsyncTask().execute("london");
+        String location = SunshinePreferences.getPreferredWeatherLocation(this);
+        new WeatherDataAsyncTask().execute(location);
     }
     // TODO (5) Create a class that extends AsyncTask to perform network requests Okay
     class WeatherDataAsyncTask extends AsyncTask<String,Void,String>{
