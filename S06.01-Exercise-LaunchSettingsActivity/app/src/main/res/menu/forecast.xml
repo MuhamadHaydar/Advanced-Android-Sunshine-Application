@@ -24,9 +24,16 @@
         android:orderInCategory="1"
         android:title="@string/action_refresh"
         app:showAsAction="ifRoom"/>
-    <!--TODO (4) Add a Settings option to the main menu-->
+    <!--TODO (4) Add a Settings option to the main menu Okay-->
     <item
         android:id="@+id/action_map"
         android:title="@string/action_map"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never"
+        android:orderInCategory="2"
+        />
 </menu>
