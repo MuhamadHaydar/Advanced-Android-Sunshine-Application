@@ -34,13 +34,16 @@ import com.example.android.sunshine.utilities.SunshineWeatherUtils;
  */
 class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
-//  TODO (1) Add a layout called list_item_forecast_today
-//  TODO (2) Using ConstraintLayout, implement the today list item layout
+//  TODO (1) Add a layout called list_item_forecast_today Okay
+//  TODO (2) Using ConstraintLayout, implement the today list item layout Okay
 
-//  TODO (4) Create a resources file called bools.xml within the res/values-port directory
-//  TODO (5) Within bools.xml in the portrait specific directory, add a bool called use_today_layout and set it to false
 
-//  TODO (6) Declare constant IDs for the ViewType for today and for a future day
+//  TODO (4) Create a resources file called bools.xml within the res/values-port directory Okay
+//  TODO (5) Within bools.xml in the portrait specific directory, add a bool called use_today_layout and set it to false okay
+
+    //  TODO (6) Declare constant IDs for the ViewType for today and for a future day Okay
+    private static final int FORECAST_LIST_ITEM_LAYOUT_ID = 1;
+    private static final int TODAY_FORECAST_LIST_ITEM_LAYOUT_ID = 2;
 
     /* The context we use to utility methods, app resources and layout inflaters */
     private final Context mContext;
@@ -66,7 +69,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      * is in landscape. This flag will be set in the constructor of the adapter by accessing
      * boolean resources.
      */
-//  TODO (7) Declare a private boolean called mUseTodayLayout
+//  TODO (7) Declare a private boolean called mUseTodayLayout Okay
+    private boolean mUseTodayLayout;
 
     private Cursor mCursor;
 
@@ -80,7 +84,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     public ForecastAdapter(@NonNull Context context, ForecastAdapterOnClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
-//      TODO (8) Set mUseTodayLayout to the value specified in resources
+//      TODO (8) Set mUseTodayLayout to the value specified in resources Okay
+        mUseTodayLayout = context.getResources().getBoolean(R.bool.use_today_layout);
     }
 
     /**
@@ -97,17 +102,24 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     @Override
     public ForecastAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-//      TODO (12) If the view type of the layout is today, use today layout
+//      TODO (12) If the view type of the layout is today, use today layout Okay
+        if (viewType == TODAY_FORECAST_LIST_ITEM_LAYOUT_ID) {
+            View view = LayoutInflater
+                    .from(mContext)
+                    .inflate(R.layout.list_item_forecast_today, viewGroup, false);
 
-//      TODO (13) If the view type of the layout is future day, use future day layout
+            return new ForecastAdapterViewHolder(view);
+        } else if (viewType == FORECAST_LIST_ITEM_LAYOUT_ID) {
+//      TODO (13) If the view type of the layout is future day, use future day layout Okay
+            View view = LayoutInflater
+                    .from(mContext)
+                    .inflate(R.layout.forecast_list_item, viewGroup, false);
 
-//      TODO (14) Otherwise, throw an IllegalArgumentException
-
-        View view = LayoutInflater
-                .from(mContext)
-                .inflate(R.layout.forecast_list_item, viewGroup, false);
-
-        return new ForecastAdapterViewHolder(view);
+            return new ForecastAdapterViewHolder(view);
+        } else {
+            throw new IllegalArgumentException("failed dataType returned.");
+        }
+//      TODO (14) Otherwise, throw an IllegalArgumentException Okay
     }
 
     /**
@@ -130,11 +142,18 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         int weatherId = mCursor.getInt(MainActivity.INDEX_WEATHER_CONDITION_ID);
         int weatherImageId;
 
-//      TODO (15) If the view type of the layout is today, display a large icon
+//      TODO (15) If the view type of the layout is today, display a large icon Okay
+        if (getItemViewType(position) == TODAY_FORECAST_LIST_ITEM_LAYOUT_ID) {
+            weatherImageId = SunshineWeatherUtils.getLargeArtResourceIdForWeatherCondition(weatherId);
+        } else if (getItemViewType(position) == FORECAST_LIST_ITEM_LAYOUT_ID) {
+            weatherImageId = SunshineWeatherUtils.getSmallArtResourceIdForWeatherCondition(weatherId);
+        } else {
+            throw new IllegalArgumentException("Error Getting the weather icon.");
+        }
 
-//      TODO (16) If the view type of the layout is future day, display a small icon
+//      TODO (16) If the view type of the layout is future day, display a small icon Okay
 
-//      TODO (17) Otherwise, throw an IllegalArgumentException
+//      TODO (17) Otherwise, throw an IllegalArgumentException Okay
 
         weatherImageId = SunshineWeatherUtils
                 .getSmallArtResourceIdForWeatherCondition(weatherId);
@@ -211,9 +230,19 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         return mCursor.getCount();
     }
 
-//  TODO (9) Override getItemViewType
-//      TODO (10) Within getItemViewType, if mUseTodayLayout is true and position is 0, return the ID for today viewType
-//      TODO (11) Otherwise, return the ID for future day viewType
+//  TODO (9) Override getItemViewType Okay
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mUseTodayLayout && position == 0) {
+            return TODAY_FORECAST_LIST_ITEM_LAYOUT_ID;
+        } else {
+            return FORECAST_LIST_ITEM_LAYOUT_ID;
+        }
+    }
+
+//      TODO (10) Within getItemViewType, if mUseTodayLayout is true and position is 0, return the ID for today viewType Okay
+//      TODO (11) Otherwise, return the ID for future day viewType Okay
 
     /**
      * Swaps the cursor used by the ForecastAdapter for its weather data. This method is called by
