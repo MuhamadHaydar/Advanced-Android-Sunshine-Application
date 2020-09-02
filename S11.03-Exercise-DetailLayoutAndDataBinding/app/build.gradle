@@ -17,7 +17,10 @@ android {
         }
     }
 
-    //  TODO (1) Enable databinding
+    //  TODO (1) Enable databinding Okay
+    dataBinding{
+        enabled=true
+    }
 }
 
 dependencies {
